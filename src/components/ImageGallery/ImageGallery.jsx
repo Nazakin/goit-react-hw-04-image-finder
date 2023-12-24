@@ -1,14 +1,17 @@
 import React from "react";
-import css from './ImageGalery.module.css'
+import css from './ImageGalery.module.css';
+import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
+import { Button } from "components/Button/Button";
 
-export const ImageGallery = ({ pictures }) => {
+export const ImageGallery = ({ pictures, loadMore }) => {
   return (
-    <ul className={css.gallery}>
-      {pictures.map(({ id, webformatURL }) => (
-        <li key={id} className={css.gallery_item}>
-          <img src={webformatURL} alt="" />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className={css.gallery}>
+        {pictures.map(({ id, webformatURL }) => (
+          <ImageGalleryItem key={id} src={webformatURL}/>
+        ))}
+      </ul>
+      <Button loadMore={loadMore} />
+    </>
   );
 };

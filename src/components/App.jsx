@@ -8,27 +8,38 @@ export class App extends Component {
   
   state = {
     pictures: [],
+    page: 1,
+    perPage: 12,
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
     const searchValue = e.target.searchInput.value;
-    fetch(`https://pixabay.com/api/?q=${searchValue}&page=1&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=12`)
+    fetch(`https://pixabay.com/api/?q=${searchValue}&page=${this.state.page}&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`)
       .then(res => res.json())
       .then(data => {
-        this.setState({ pictures: data.hits })
+        this.setState(prev => ({ 
+          pictures: data.hits,
+          page: prev.page + 1,
+        }));
       })
       .catch(error => {
         console.error(error);
       });
   };
 
+  loadMore = () => {
+    this.setState(prev => ({
+      perPage: prev.perPage + 12,
+    }));
+  }
+
   render() {
     const { pictures } = this.state;
     return (
       <>
         <Searchbar handleSubmit={this.handleSubmit} />
-        <ImageGallery pictures={this.state.pictures} />
+        <ImageGallery pictures={pictures} loadMore={this.loadMore} />
       </>
     );
   }
