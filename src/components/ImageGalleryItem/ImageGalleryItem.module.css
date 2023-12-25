@@ -11,3 +11,8 @@
     object-fit: cover; 
     display: block;
 }
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
