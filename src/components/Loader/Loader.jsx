@@ -1,8 +1,10 @@
 import React from "react";
 import { MagnifyingGlass } from 'react-loader-spinner'
+import css from './Loader.module.css'
 
 export const Loader = () => {
     return(
+        <div className={css.loader}>
         <MagnifyingGlass
         visible={true}
         height="80"
@@ -12,6 +14,7 @@ export const Loader = () => {
         wrapperClass="magnifying-glass-wrapper"
         glassColor="#c0efff"
         color="#e15b64"/>
+        </div>
     )
 
 }
