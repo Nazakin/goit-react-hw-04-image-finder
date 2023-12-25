@@ -1,9 +1,11 @@
 import React from "react";
 
-export const Button = ({ loadMore }) => {
+export const Button = ({ loadMore, isImagesAvailable }) => {
   return (
-    <button type="button" onClick={loadMore}>
+    <>
+   { isImagesAvailable &&(<button type="button" onClick={loadMore}>
       Load more
-    </button>
+    </button>)}
+    </>
   );
 };

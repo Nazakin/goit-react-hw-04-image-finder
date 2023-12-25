@@ -11,7 +11,7 @@ export const ImageGallery = ({ pictures, loadMore }) => {
           <ImageGalleryItem key={id} src={webformatURL}/>
         ))}
       </ul>
-      <Button loadMore={loadMore} />
+       <Button loadMore={loadMore} isImagesAvailable={pictures.length > 0}/>
     </>
   );
 };
