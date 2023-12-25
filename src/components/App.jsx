@@ -13,6 +13,7 @@ export class App extends Component {
     page: 1,
     perPage: 12,
     isLoading: false,
+    isLoadingMore: false,
     modal: false,
     selectedPicture: ""
   };
@@ -44,14 +45,14 @@ export class App extends Component {
     const searchValue = searchInput.value;
     fetch(`https://pixabay.com/api/?q=${searchValue}&page=${this.state.page}&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`)
     .then(this.setState(prev => ({
-      isLoading: true,})))  
+      isLoadingMore: true,})))  
     .then(res => res.json())
       .then(data => {
         setTimeout(() => {
         this.setState(prev => ({ 
           pictures: [...prev.pictures, ...data.hits],
           page: prev.page + 1,
-          isLoading: false,
+          isLoadingMore: false,
           
         }));
       }, 300);
@@ -81,16 +82,14 @@ export class App extends Component {
           }}
 
   render() {
-    const { pictures, isLoading, modal, selectedPicture } = this.state;
+    const { pictures, isLoading, modal, selectedPicture, isLoadingMore } = this.state;
     return (
       <>
         <Searchbar handleSubmit={this.handleSubmit} />
-        <ImageGallery pictures={pictures} loadMore={this.loadMore} toggleModal={this.toggleModal}/>
-        <div className={css.loader}>
+        <ImageGallery pictures={pictures} loadMore={this.loadMore} toggleModal={this.toggleModal} isLoadingMore={isLoadingMore}/>
         {isLoading && (
           <Loader/>
         )}
-  </div>
         {modal && (<Modal closeModal={this.closeModal} src={selectedPicture} handleKeyDown={this.handleKeyDown}/>)}
       </>
     );
