@@ -1,0 +1,16 @@
+.load_more_button{
+    background-color: dodgerblue;
+    border: none;
+    width: 200px;
+    height: 30px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Searchbar } from "./SearchBar/Searchbar";
 import { ImageGallery } from './ImageGallery/ImageGallery.jsx';
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
-import { MagnifyingGlass } from 'react-loader-spinner'
 import css from './ImageGalleryItem/ImageGalleryItem.module.css'
 import { Modal } from "./Modal/Modal";
+import { Loader } from "./Loader/Loader";
 
 const ApiKey = "40245726-79ec486d411d0a8bb323ae989";
 export class App extends Component {
@@ -15,6 +15,7 @@ export class App extends Component {
     perPage: 12,
     isLoading: false,
     modal: false,
+    selectedPicture: ""
   };
   handleSubmit = (e) => {
     e.preventDefault();
@@ -52,6 +53,7 @@ export class App extends Component {
           pictures: [...prev.pictures, ...data.hits],
           page: prev.page + 1,
           isLoading: false,
+          
         }));
       }, 300);
       })
@@ -59,39 +61,38 @@ export class App extends Component {
         console.error(error);
       });
   }
-  toggleModal = () =>{
+  toggleModal = (e) => {
+    const selectedPicture = e.target.src;
     this.setState({
       modal: true,
-    })
-  }
+      selectedPicture: selectedPicture,
+    });
+   
+  };
   closeModal = () =>{
     this.setState({
       modal: false,
     })
   }
+ handleKeyDown = (event) => {
+        if (event.key === "Escape") {
+            this.setState({
+              modal: false,
+            });
+          }}
 
   render() {
-    const { pictures, isLoading, modal } = this.state;
+    const { pictures, isLoading, modal, selectedPicture } = this.state;
     return (
       <>
         <Searchbar handleSubmit={this.handleSubmit} />
         <ImageGallery pictures={pictures} loadMore={this.loadMore} toggleModal={this.toggleModal}/>
         <div className={css.loader}>
         {isLoading && (
-          
-          <MagnifyingGlass
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="magnifying-glass-loading"
-        wrapperStyle={{}}
-        wrapperClass="magnifying-glass-wrapper"
-        glassColor="#c0efff"
-        color="#e15b64"
-        
-  />)}
+          <Loader/>
+        )}
   </div>
-        {modal && (<Modal closeModal={this.closeModal} src={pictures[0].webformatURL}/>)}
+        {modal && (<Modal closeModal={this.closeModal} src={selectedPicture} handleKeyDown={this.handleKeyDown}/>)}
       </>
     );
   }
