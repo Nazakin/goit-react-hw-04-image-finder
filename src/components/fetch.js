@@ -8,7 +8,7 @@ export const handleFetch = ({
   setHasMorePictures,
 }) => {
   const perPage = 12;
-  const page = pageRef.current; // Access the current value of the ref
+  const page = pageRef.current; 
   const ApiKey = "40245726-79ec486d411d0a8bb323ae989";
   const url = `https://pixabay.com/api/?q=${searchValue}&page=${page}&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
 

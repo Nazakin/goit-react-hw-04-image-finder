@@ -42,7 +42,7 @@ export const App = () => {
       searchValue,
       setPictures,
       setPage,
-      pageRef, // Pass pageRef directly
+      pageRef, 
       setIsLoading,
       setIsLoadingMore,
       setHasMorePictures,
@@ -57,7 +57,7 @@ export const App = () => {
       searchValue,
       setPictures: (newPictures) => setPictures((prevPictures) => [...prevPictures, ...newPictures]),
       setPage,
-      pageRef, // Pass pageRef directly
+      pageRef, 
       setIsLoading,
       setIsLoadingMore,
       setHasMorePictures,
