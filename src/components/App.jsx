@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Searchbar } from "./SearchBar/Searchbar";
 import { ImageGallery } from './ImageGallery/ImageGallery.jsx';
@@ -16,20 +15,19 @@ export const App = () => {
   const [selectedPicture, setSelectedPicture] = useState("");
   const [hasMorePictures, setHasMorePictures] = useState(false);
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      setModal(false);
+    }
+  };
 
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setModal(false);
-      }
-    };
-
-    useEffect(() => {
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []); 
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,46 +35,20 @@ export const App = () => {
     setIsLoading(true);
     setPictures([]);
     setPage(1);
-    setIsLoading(true)
-    pageRef.current = page;
-  
+    setIsLoading(true);
+    pageRef.current = 1;
+
     handleFetch({
       searchValue,
       setPictures,
       setPage,
-      page,
-      pageRef: { current: page },
+      pageRef, // Pass pageRef directly
       setIsLoading,
       setIsLoadingMore,
       setHasMorePictures,
-      
     });
   };
 
-  const handleFetch = ({ searchValue, setPictures, setPage, page, pageRef, setIsLoading,setIsLoadingMore, setHasMorePictures }) => {
-    const perPage = 12;
-    const ApiKey = "40245726-79ec486d411d0a8bb323ae989";
-    const url = `https://pixabay.com/api/?q=${searchValue}&page=${page}&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
-  
-    setTimeout(() => {
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          setPictures(data.hits);
-          setPage(pageRef.current + 1); 
-          setIsLoading(false);
-          setIsLoadingMore(false)
-          setHasMorePictures(data.hits.length === perPage);
-        })
-        .catch((error) => {
-          console.error(error);
-          setIsLoading(false);
-        });
-    }, 300, () => {
-        console.log(page)
-    });
-    console.log(page)
-  };
   const loadMore = () => {
     const searchInput = document.querySelector('[name="searchInput"]');
     const searchValue = searchInput.value;
@@ -85,13 +57,12 @@ export const App = () => {
       searchValue,
       setPictures: (newPictures) => setPictures((prevPictures) => [...prevPictures, ...newPictures]),
       setPage,
-      page,
+      pageRef, // Pass pageRef directly
       setIsLoading,
       setIsLoadingMore,
       setHasMorePictures,
     });
-  }
-  
+  };
 
   const toggleModal = (e) => {
     const selectedPicture = e.target.src;
@@ -106,16 +77,14 @@ export const App = () => {
   return (
     <>
       <Searchbar handleSubmit={handleSubmit} />
-      <ImageGallery pictures={pictures} loadMore={loadMore} toggleModal={toggleModal} isLoadingMore={isLoadingMore} hasMorePictures={hasMorePictures}/>
+      <ImageGallery pictures={pictures} loadMore={loadMore} toggleModal={toggleModal} isLoadingMore={isLoadingMore} hasMorePictures={hasMorePictures} />
       {isLoading && (
-        <Loader/>
+        <Loader />
       )}
-      {modal && (<Modal closeModal={closeModal} src={selectedPicture} handleKeyDown={handleKeyDown}/>)}
+      {modal && (<Modal closeModal={closeModal} src={selectedPicture} handleKeyDown={handleKeyDown} />)}
     </>
   );
 };
-
-
 
 
 
