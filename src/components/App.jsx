@@ -14,6 +14,29 @@ export const App = () => {
   const [modal, setModal] = useState(false);
   const [selectedPicture, setSelectedPicture] = useState("");
   const [hasMorePictures, setHasMorePictures] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setPictures([]);
+      setPage(1);
+      setIsLoading(true);
+      pageRef.current = 1;
+
+      await handleFetch({
+        searchValue,
+        setPictures,
+        setPage,
+        pageRef, 
+        setIsLoading,
+        setIsLoadingMore,
+        setHasMorePictures,
+      });
+    };
+
+    fetchData();
+  }, [searchValue]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -31,22 +54,8 @@ export const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const searchValue = e.target.searchInput.value;
-    setIsLoading(true);
-    setPictures([]);
-    setPage(1);
-    setIsLoading(true);
-    pageRef.current = 1;
-
-    handleFetch({
-      searchValue,
-      setPictures,
-      setPage,
-      pageRef, 
-      setIsLoading,
-      setIsLoadingMore,
-      setHasMorePictures,
-    });
+    const newSearchValue = e.target.searchInput.value;
+    setSearchValue(newSearchValue);
   };
 
   const loadMore = () => {
@@ -85,8 +94,6 @@ export const App = () => {
     </>
   );
 };
-
-
 
 
 
